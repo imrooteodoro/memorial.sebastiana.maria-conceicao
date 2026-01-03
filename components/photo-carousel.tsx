@@ -12,6 +12,7 @@ interface Props {
 
 export default function PhotoCarousel({ filenames, basePath }: Props) {
   // Configuração simplificada para evitar quebra de layout
+  //teste
   const [emblaRef] = useEmblaCarousel({ 
     loop: true, 
     align: 'start',
@@ -21,6 +22,7 @@ export default function PhotoCarousel({ filenames, basePath }: Props) {
   return (
     <div className="w-full relative">
       {/* Container Principal do Embla */}
+      
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y -ml-4"> {/* Margem negativa para compensar o padding dos slides */}
           {filenames.map((name) => (
