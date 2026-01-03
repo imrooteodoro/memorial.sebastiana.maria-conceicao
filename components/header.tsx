@@ -17,9 +17,23 @@ export default function Header() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentTrack, setCurrentTrack] = useState("");
 
-  useEffect(() => {
+  // Função para sortear e trocar a música
+  const playNextSong = () => {
     const randomIndex = Math.floor(Math.random() * playlist.length);
-    setCurrentTrack(`${basePath}/music/${playlist[randomIndex]}`);
+    const newTrack = `${basePath}/music/${playlist[randomIndex]}`;
+    
+    // Evita sortear a mesma música que está tocando agora (opcional)
+    if (newTrack === currentTrack && playlist.length > 1) {
+      playNextSong();
+      return;
+    }
+    
+    setCurrentTrack(newTrack);
+  };
+
+  useEffect(() => {
+    // Sorteia a primeira música ao carregar a página
+    playNextSong();
 
     const playAudio = () => {
       if (audioRef.current) {
@@ -50,7 +64,8 @@ export default function Header() {
         <audio 
           ref={audioRef} 
           src={currentTrack} 
-          loop 
+          onEnded={playNextSong}
+          autoPlay
           preload="auto"
         />
       )}
