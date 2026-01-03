@@ -2,15 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import Header from "@/components/header";
 import PhotoCarousel from "@/components/photo-carousel";
-import Image from "next/image";
+import GalleryGrid from "@/components/gallery-grid";
 
-const basePath = '/memorial.sebastiana.maria-conceicao';
+const basePath = '/memorial.sebastiana.maria.conceicao';
 
 export default function Home() {
+  // Caminho exato da pasta dentro de public
   const photosDirectory = path.join(process.cwd(), 'public', 'imgs', 'vozinha-fotos');
   
   let filenames: string[] = [];
-
+  
   try {
     if (fs.existsSync(photosDirectory)) {
       filenames = fs.readdirSync(photosDirectory)
@@ -28,8 +29,8 @@ export default function Home() {
       <Header />
 
       <main className="flex-grow max-w-4xl mx-auto px-6 py-12 md:py-16 w-full">
-        {/* Seção Essência */}
-        <section className="mb-16 md:mb-20 text-center">
+        {/* Seção Introdução */}
+        <section className="mb-16 md:mb-20 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <h2 className="text-3xl font-serif text-stone-700 mb-8 italic">
             Sua Essência
           </h2>
@@ -45,60 +46,39 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Seção Galeria */}
+        {/* Seção Galeria Dinâmica */}
         <section className="mb-20">
-          <div className="flex items-center justify-between mb-8 border-b border-stone-200 pb-2">
+          <div className="flex items-center justify-between mb-12 border-b border-stone-200 pb-2">
             <h2 className="text-2xl font-serif text-stone-700">Retratos de uma Vida</h2>
             <span className="text-stone-400 text-sm font-light italic">
-              Um registro de momentos eternos
+              Clique nas imagens para ampliar
             </span>
           </div>
           
           {filenames.length > 0 ? (
             <>
-              <div className="mb-16 w-full max-w-2xl mx-auto shadow-xl rounded-xl overflow-hidden">
+              {/* Carrossel de Destaque */}
+              <div className="mb-20 w-full max-w-2xl mx-auto shadow-2xl rounded-2xl overflow-hidden border border-white">
                 <PhotoCarousel filenames={filenames} basePath={basePath} />
               </div>
 
-              <div className="mb-8">
-                <h3 className="text-stone-500 font-serif italic text-sm border-l-2 border-stone-200 pl-3">
-                  Galeria de Memórias
-                </h3>
-              </div>
-
-              <div className="columns-2 md:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6">
-                {filenames.map((name) => (
-                  <div 
-                    key={name} 
-                    className="break-inside-avoid bg-white rounded-lg overflow-hidden relative group border border-stone-100 shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <Image
-                      src={`${basePath}/imgs/vozinha-fotos/${name}`}
-                      alt={`Foto de Dona Sebastiana - ${name}`}
-                      width={800} // Largura base para manter proporção
-                      height={1200} // Altura base teste
-                      layout="responsive"
-                      className="object-contain transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/5 transition-colors duration-300" />
-                  </div>
-                ))}
-              </div>
+              {/* Grid Mural Interativo */}
+              <GalleryGrid filenames={filenames} basePath={basePath} />
             </>
           ) : (
-            <div className="text-center py-20 border-2 border-dashed border-stone-200 rounded-xl">
+            <div className="text-center py-20 border-2 border-dashed border-stone-200 rounded-xl bg-white/50">
               <p className="text-stone-400">
-                Nenhuma foto encontrada em: <br/>
-                <code className="text-xs bg-stone-100 p-1">/public/imgs/vozinha-fotos</code>
+                Aguardando o carregamento das memórias... <br/>
+                <span className="text-xs">Certifique-se que as fotos estão em: /public/imgs/vozinha-fotos</span>
               </p>
             </div>
           )}
         </section>
       </main>
 
-      <footer className="mt-auto pt-10 pb-12 border-t border-stone-200 bg-white/50 text-center text-stone-400 text-sm">
-        <p className="font-serif italic text-stone-500 mb-2">Sempre em nossos corações</p>
-        <p>Memorial de Sebastiana Maria Conceição — 2025</p>
+      <footer className="mt-auto pt-10 pb-12 border-t border-stone-200 bg-white/50 text-center">
+        <p className="font-serif italic text-stone-500 mb-2 text-lg">Sempre em nossos corações</p>
+        <p className="text-stone-400 text-sm">Memorial de Sebastiana Maria Conceição — 2025</p>
       </footer>
     </div>
   );
