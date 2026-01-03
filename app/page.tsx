@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Header from "@/components/header";
 import PhotoCarousel from "@/components/photo-carousel";
+import Image from "next/image";
 
 const basePath = '/memorial.sebastiana.maria.conceicao';
 
@@ -42,7 +43,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section>
+        <section className="mb-20">
           <div className="flex items-center justify-between mb-8 border-b border-stone-200 pb-2">
             <h2 className="text-2xl font-serif text-stone-700">Retratos de uma Vida</h2>
             <span className="text-stone-400 text-sm font-light italic">
@@ -51,7 +52,31 @@ export default function Home() {
           </div>
           
           {filenames.length > 0 ? (
-            <PhotoCarousel filenames={filenames} basePath={basePath} />
+            <>
+              {/* Carrossel Animado */}
+              <div className="mb-16">
+                <PhotoCarousel filenames={filenames} basePath={basePath} />
+              </div>
+
+              {/* Galeria Completa (Grade de fotos no final) */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {filenames.map((name) => (
+                  <div 
+                    key={name} 
+                    className="aspect-square bg-stone-200 rounded-lg overflow-hidden relative group border border-stone-100 shadow-sm hover:shadow-md transition-all"
+                  >
+                    <Image
+                      src={`${basePath}/imgs/vozinha-fotos/${name}`}
+                      alt={`Foto de Dona Sebastiana - ${name}`}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-300" />
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
             <p className="text-center text-stone-400 py-10">
               Nenhuma foto encontrada na pasta /public/imgs/voziha-fotos
