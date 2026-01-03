@@ -7,17 +7,18 @@ import Image from "next/image";
 const basePath = '/memorial.sebastiana.maria.conceicao';
 
 export default function Home() {
- 
-  const photosDirectory = path.join(process.cwd(), 'public/imgs/vozinha-fotos');
+  const photosDirectory = path.join(process.cwd(), 'public', 'imgs', 'vozinha-fotos');
   
   let filenames: string[] = [];
-  //comentario teste
+
   try {
-    filenames = fs.readdirSync(photosDirectory)
-      .filter(file => {
-        const ext = path.extname(file).toLowerCase();
-        return ext === '.jpeg' || ext === '.jpg' || ext === '.png';
-      });
+    if (fs.existsSync(photosDirectory)) {
+      filenames = fs.readdirSync(photosDirectory)
+        .filter(file => {
+          const ext = path.extname(file).toLowerCase();
+          return ['.jpeg', '.jpg', '.png'].includes(ext);
+        });
+    }
   } catch (error) {
     console.error("Erro ao ler a pasta de fotos:", error);
   }
@@ -55,42 +56,46 @@ export default function Home() {
           
           {filenames.length > 0 ? (
             <>
-              <div className="mb-16 w-full max-w-lg md:max-w-none mx-auto">
+              <div className="mb-16 w-full max-w-2xl mx-auto shadow-xl rounded-xl overflow-hidden">
                 <PhotoCarousel filenames={filenames} basePath={basePath} />
               </div>
 
-              <div className="mb-6">
+              <div className="mb-8">
                 <h3 className="text-stone-500 font-serif italic text-sm border-l-2 border-stone-200 pl-3">
+                  Galeria de Memórias
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              <div className="columns-2 md:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6">
                 {filenames.map((name) => (
                   <div 
                     key={name} 
-                    className="aspect-square bg-stone-200 rounded-lg overflow-hidden relative group border border-stone-100 shadow-sm hover:shadow-md transition-all"
+                    className="break-inside-avoid bg-white rounded-lg overflow-hidden relative group border border-stone-100 shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     <Image
                       src={`${basePath}/imgs/vozinha-fotos/${name}`}
                       alt={`Foto de Dona Sebastiana - ${name}`}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      width={800} // Largura base para manter proporção
+                      height={1200} // Altura base
+                      layout="responsive"
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-300" />
+                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/5 transition-colors duration-300" />
                   </div>
                 ))}
               </div>
             </>
           ) : (
-            <p className="text-center text-stone-400 py-10">
-              Nenhuma foto encontrada na pasta /public/imgs/voziha-fotos
-            </p>
+            <div className="text-center py-20 border-2 border-dashed border-stone-200 rounded-xl">
+              <p className="text-stone-400">
+                Nenhuma foto encontrada em: <br/>
+                <code className="text-xs bg-stone-100 p-1">/public/imgs/vozinha-fotos</code>
+              </p>
+            </div>
           )}
         </section>
       </main>
 
-      {/* Footer Integrado */}
       <footer className="mt-auto pt-10 pb-12 border-t border-stone-200 bg-white/50 text-center text-stone-400 text-sm">
         <p className="font-serif italic text-stone-500 mb-2">Sempre em nossos corações</p>
         <p>Memorial de Sebastiana Maria Conceição — 2025</p>
