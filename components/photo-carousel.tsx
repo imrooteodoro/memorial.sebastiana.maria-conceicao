@@ -11,21 +11,26 @@ interface Props {
 }
 
 export default function PhotoCarousel({ filenames, basePath }: Props) {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000 })]);
+  // align: 'start' ajuda a mostrar uma parte da próxima foto no mobile
+  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start' }, [
+    Autoplay({ delay: 4000, stopOnInteraction: false })
+  ]);
 
   return (
-    <div className="overflow-hidden bg-stone-100 rounded-xl shadow-inner" ref={emblaRef}>
+    <div className="overflow-hidden" ref={emblaRef}>
       <div className="flex">
         {filenames.map((name) => (
           <div 
             key={name} 
-            className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] relative aspect-[4/3] px-2"
+           
+            className="flex-[0_0_85%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-2"
           >
-            <div className="relative w-full h-full overflow-hidden rounded-lg border border-stone-200 shadow-sm">
+            <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-xl border border-stone-200 shadow-sm bg-white">
               <Image
                 src={`${basePath}/imgs/vozinha-fotos/${name}`}
                 alt="Retrato memorial"
                 fill
+                sizes="(max-width: 768px) 85vw, 33vw"
                 className="object-cover"
               />
             </div>
