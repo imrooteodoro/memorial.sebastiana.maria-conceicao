@@ -57,7 +57,7 @@ export default function Home() {
                 className="aspect-square bg-stone-200 rounded-lg overflow-hidden relative group cursor-pointer border border-stone-100 shadow-sm hover:shadow-md transition-all"
               >
                 <Image
-                  src={`${basePath}/imgs/voziha-fotos/${name}`}
+                  src={`${basePath}/imgs/vozinha-fotos/${name}`}
                   alt={`Foto de Dona Sebastiana - ${name}`}
                   fill
                   sizes="(max-width: 768px) 50vw, 33vw"
