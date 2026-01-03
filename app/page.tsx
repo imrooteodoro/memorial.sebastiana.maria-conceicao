@@ -76,7 +76,7 @@ export default function Home() {
                       src={`${basePath}/imgs/vozinha-fotos/${name}`}
                       alt={`Foto de Dona Sebastiana - ${name}`}
                       width={800} // Largura base para manter proporção
-                      height={1200} // Altura base
+                      height={1200} // Altura base teste
                       layout="responsive"
                       className="object-contain transition-transform duration-700 group-hover:scale-105"
                     />
