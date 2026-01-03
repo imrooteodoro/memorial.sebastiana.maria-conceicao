@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Header from "@/components/header";
-import Image from "next/image";
+import PhotoCarousel from "@/components/photo-carousel";
 
 const basePath = '/memorial.sebastiana.maria.conceicao';
 
@@ -22,10 +22,10 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50/30"> 
+    <div className="min-h-screen bg-stone-50/30 flex flex-col"> 
       <Header />
 
-      <main className="max-w-4xl mx-auto px-6 py-16">
+      <main className="flex-grow max-w-4xl mx-auto px-6 py-16">
         <section className="mb-20 text-center">
           <h2 className="text-3xl font-serif text-stone-700 mb-8 italic">
             Sua Essência
@@ -50,36 +50,20 @@ export default function Home() {
             </span>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {filenames.map((name) => (
-              <div 
-                key={name} 
-                className="aspect-square bg-stone-200 rounded-lg overflow-hidden relative group cursor-pointer border border-stone-100 shadow-sm hover:shadow-md transition-all"
-              >
-                <Image
-                  src={`${basePath}/imgs/vozinha-fotos/${name}`}
-                  alt={`Foto de Dona Sebastiana - ${name}`}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/10 transition-colors duration-300" />
-              </div>
-            ))}
-
-            {filenames.length === 0 && (
-              <p className="col-span-full text-center text-stone-400 py-10">
-                Nenhuma foto encontrada na pasta /public/imgs/voziha-fotos
-              </p>
-            )}
-          </div>
+          {filenames.length > 0 ? (
+            <PhotoCarousel filenames={filenames} basePath={basePath} />
+          ) : (
+            <p className="text-center text-stone-400 py-10">
+              Nenhuma foto encontrada na pasta /public/imgs/voziha-fotos
+            </p>
+          )}
         </section>
-
-        <footer className="mt-24 pt-8 border-t border-stone-200 text-center text-stone-400 text-sm">
-          <p>Sempre em nossos corações</p>
-          <p className="mt-2">Memorial de Sebastiana Maria Conceição — 2025</p>
-        </footer>
       </main>
+
+      <footer className="mt-24 pt-8 pb-12 border-t border-stone-200 text-center text-stone-400 text-sm">
+        <p>Sempre em nossos corações</p>
+        <p className="mt-2">Memorial de Sebastiana Maria Conceição — 2025</p>
+      </footer>
     </div>
   );
 }
