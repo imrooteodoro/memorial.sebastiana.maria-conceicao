@@ -7,10 +7,10 @@ const basePath = '/memorial.sebastiana.maria-conceicao';
 
 const playlist = [
   "mas-eu-te-amo.mp3",        
-  "eu-so-quero-adorar.mp3",   
-  "raridade.mp3",             
-  "acalma-o-meu-coracao.mp3", 
+  "eu-so-quero-adorar.mp3",
+  "acalma-o-meu-coracao.mp3",
   "cancao-do-ceu.mp3",
+  "raridade.mp3",             
   "primeira-essencia.mp3",
   "promessa.mp3",
 ];
