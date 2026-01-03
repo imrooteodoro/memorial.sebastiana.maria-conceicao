@@ -6,7 +6,7 @@ import Image from "next/image";
 const basePath = '/memorial.sebastiana.maria.conceicao';
 
 export default function Header() {
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const playAudio = () => {
@@ -17,13 +17,13 @@ export default function Header() {
             window.removeEventListener("touchstart", playAudio);
             window.removeEventListener("scroll", playAudio);
           })
-          .catch((error) => console.log("Aguardando interação real..."));
+          .catch((error) => console.log("Interação necessária para tocar áudio."));
       }
     };
 
     window.addEventListener("click", playAudio);
-    window.addEventListener("touchstart", playAudio); 
-    window.addEventListener("scroll", playAudio);    
+    window.addEventListener("touchstart", playAudio);
+    window.addEventListener("scroll", playAudio);
 
     return () => {
       window.removeEventListener("click", playAudio);
