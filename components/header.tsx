@@ -21,35 +21,36 @@ const playlist = [
 export default function Header() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  const [currentIndex, setCurrentIndex] = useState(() => 
-    Math.floor(Math.random() * playlist.length)
-  );
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
-  const currentTrack = `${basePath}/music/${playlist[currentIndex]}`;
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * playlist.length);
+    setCurrentIndex(randomIndex);
+  }, []);
+
+  const currentTrack = currentIndex !== null ? `${basePath}/music/${playlist[currentIndex]}` : "";
 
   const playNextSong = () => {
     setCurrentIndex((prevIndex) => {
       if (playlist.length <= 1) return 0;
-
       let nextIndex;
       do {
         nextIndex = Math.floor(Math.random() * playlist.length);
       } while (nextIndex === prevIndex);
-
       return nextIndex;
     });
   };
 
   useEffect(() => {
     const playAudio = () => {
-      if (audioRef.current) {
+      if (audioRef.current && audioRef.current.src) {
         audioRef.current.play()
           .then(() => {
             window.removeEventListener("click", playAudio);
             window.removeEventListener("touchstart", playAudio);
             window.removeEventListener("scroll", playAudio);
           })
-          .catch((error) => console.log("Interação necessária para tocar áudio."));
+          .catch((error) => console.log("Aguardando interação..."));
       }
     };
 
@@ -62,17 +63,19 @@ export default function Header() {
       window.removeEventListener("touchstart", playAudio);
       window.removeEventListener("scroll", playAudio);
     };
-  }, []);
+  }, [currentIndex]);
 
   return (
     <header className="relative w-full h-[70vh] md:h-[60vh] flex flex-col items-center justify-center overflow-hidden bg-stone-100">
-      <audio 
-        ref={audioRef} 
-        src={currentTrack} 
-        onEnded={playNextSong} 
-        autoPlay
-        preload="auto"
-      />
+      {currentIndex !== null && (
+        <audio 
+          ref={audioRef} 
+          src={currentTrack} 
+          onEnded={playNextSong} 
+          autoPlay
+          preload="auto"
+        />
+      )}
 
       <div className="absolute inset-0 z-0 opacity-20">
         <Image
