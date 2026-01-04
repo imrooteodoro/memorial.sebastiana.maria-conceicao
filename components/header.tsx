@@ -20,16 +20,23 @@ const playlist = [
 
 export default function Header() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const [currentIndex, setCurrentIndex] = useState(() => 
+    Math.floor(Math.random() * playlist.length)
+  );
 
   const currentTrack = `${basePath}/music/${playlist[currentIndex]}`;
 
   const playNextSong = () => {
     setCurrentIndex((prevIndex) => {
-      if (prevIndex === playlist.length - 1) {
-        return 0;
-      }
-      return prevIndex + 1;
+      if (playlist.length <= 1) return 0;
+
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * playlist.length);
+      } while (nextIndex === prevIndex);
+
+      return nextIndex;
     });
   };
 
